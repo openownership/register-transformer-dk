@@ -1,7 +1,7 @@
 require 'register_transformer_dk/config/settings'
 require 'register_sources_bods/services/publisher'
 require 'register_transformer_dk/bods_mapping/record_processor'
-require 'register_sources_dk/structs/company_record'
+require 'register_sources_dk/structs/deltagerperson'
 require 'register_sources_oc/services/resolver_service'
 require 'register_common/services/stream_client_kinesis'
 
@@ -27,7 +27,7 @@ module RegisterTransformerDk
       def call
         stream_client.consume(consumer_id) do |record_data|
           record = JSON.parse(record_data, symbolize_names: true)
-          dk_record = RegisterSourcesDk::CompanyRecord[**record]
+          dk_record = RegisterSourcesDk::Deltagerperson[**record]
           bods_mapper.process(dk_record)
         end
       end
