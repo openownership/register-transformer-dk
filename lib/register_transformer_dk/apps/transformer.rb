@@ -36,8 +36,6 @@ module RegisterTransformerDk
       private
 
       attr_reader :bods_mapper, :stream_client, :consumer_id, :deserializer
-      
-      def 
 
       def handle_records(records)
         records.each do |record|
