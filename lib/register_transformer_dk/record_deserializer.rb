@@ -10,12 +10,12 @@ module RegisterTransformerDk
       @zip_reader = zip_reader
     end
 
-    def deserialize(record)
+    def deserialize(record_data)
       serialized_json =
         begin
-          zip_reader.open_stream(StringIO.new(record)) { |unzipped| unzipped.read }
+          zip_reader.open_stream(StringIO.new(record_data)) { |unzipped| unzipped.read }
         rescue
-          record # older records may not be compressed
+          record_data # older records may not be compressed
         end
       deserialize_from_json serialized_json
     end
@@ -24,7 +24,7 @@ module RegisterTransformerDk
 
     attr_reader :zip_reader
 
-    def deserialize_from_json(record)
+    def deserialize_from_json(record_data)
       record = JSON.parse(record_data, symbolize_names: true)
       RegisterSourcesDk::Deltagerperson[**record]
     end
