@@ -1,6 +1,6 @@
 require 'register_common/adapters/kinesis_adapter'
 require 'register_common/adapters/s3_adapter'
-require 'register_transformer_psc/config/settings'
+require 'register_transformer_dk/config/settings'
 
 module RegisterTransformerDk
   module Config
