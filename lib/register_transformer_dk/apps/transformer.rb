@@ -24,7 +24,6 @@ module RegisterTransformerDk
           credentials: RegisterTransformerDk::Config::AWS_CREDENTIALS,
           stream_name: ENV.fetch('DK_STREAM', 'dk_stream'),
           s3_adapter: s3_adapter,
-          s3_prefix: 'large-dk',
           s3_bucket: ENV['BODS_S3_BUCKET_NAME'],
         )
         @consumer_id = "RegisterTransformerDk"
