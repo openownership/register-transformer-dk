@@ -5,7 +5,7 @@ source "https://rubygems.org"
 gem "rspec", "~> 3.0"
 gem 'webmock'
 
-gem 'register_common', git: 'git@github.com:openownership/register-common.git', branch: 'publish-large-messages'
+gem 'register_common', git: 'git@github.com:openownership/register-common.git'
 gem 'register_sources_oc', git: 'git@github.com:openownership/register-sources-oc.git'
 gem 'register_sources_dk', git: 'git@github.com:openownership/register-sources-dk.git'
 gem 'register_sources_bods', git: 'git@github.com:openownership/register-sources-bods.git'
