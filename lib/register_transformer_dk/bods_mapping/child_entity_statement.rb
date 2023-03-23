@@ -5,6 +5,7 @@ require 'register_sources_bods/structs/entity_statement'
 require 'register_sources_bods/structs/identifier'
 require 'register_sources_bods/structs/jurisdiction'
 require 'register_sources_bods/constants/publisher'
+require 'register_sources_bods/mappers/resolver_mappings'
 
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/try'
@@ -19,7 +20,8 @@ module RegisterTransformerDk
   module BodsMapping
     class ChildEntityStatement
       ID_PREFIX = 'openownership-register-'.freeze
-      OPEN_CORPORATES_SCHEME_NAME = 'OpenCorporates'
+
+      include RegisterSourcesBods::Mappers::ResolverMappings
 
       def self.call(relation, utils: nil, entity_resolver: nil)
         new(relation, utils: utils, entity_resolver: entity_resolver).call
@@ -36,7 +38,8 @@ module RegisterTransformerDk
           statementID: statement_id,
           statementType: RegisterSourcesBods::StatementTypes['entityStatement'],
           isComponent: false,
-          name: company_name,
+          addresses: addresses,
+          name: company_name || name,
           entityType: RegisterSourcesBods::EntityTypes['registeredEntity'],
           incorporatedInJurisdiction: incorporated_in_jurisdiction,
           identifiers: [
@@ -50,8 +53,6 @@ module RegisterTransformerDk
           foundingDate: founding_date,
           dissolutionDate: dissolution_date,
           publicationDetails: publication_details,
-          # replacesStatements, statementDate, source
-          # annotations, addresses, unspecifiedEntityDetails, name, alternateNames, uri
         }.compact]
       end
 
@@ -79,53 +80,8 @@ module RegisterTransformerDk
         )
       end
 
-      def open_corporates_identifier
-        return unless resolver_response && resolver_response.resolved
-
-        jurisdiction = resolver_response.jurisdiction_code
-        company_number = resolver_response.company_number
-        oc_url = "https://opencorporates.com/companies/#{jurisdiction}/#{company_number}"
-
-        RegisterSourcesBods::Identifier[{
-          id: oc_url,
-          schemeName: OPEN_CORPORATES_SCHEME_NAME,
-          uri: oc_url
-        }]
-      end
-
       def statement_id
         'TODO'
-      end
-
-      def incorporated_in_jurisdiction
-        jurisdiction_code = resolver_response.jurisdiction_code
-        return unless jurisdiction_code
-      
-        code, = jurisdiction_code.split('_')
-        country = ISO3166::Country[code]
-        return nil if country.blank?
-
-        RegisterSourcesBods::Jurisdiction.new(name: country.name, code: country.alpha2)
-      end
-
-      def founding_date
-        return unless resolver_response.company
-        date = resolver_response.company.incorporation_date&.to_date
-        return unless date
-        date.try(:iso8601)
-      rescue Date::Error
-        LOGGER.warn "Entity has invalid incorporation_date: #{date}"
-        nil
-      end
-
-      def dissolution_date
-        return unless resolver_response.company
-        date = resolver_response.company.dissolution_date&.to_date
-        return unless date
-        date.try(:iso8601)
-      rescue Date::Error
-        LOGGER.warn "Entity has invalid dissolution_date: #{date}"
-        nil
       end
 
       def publication_details

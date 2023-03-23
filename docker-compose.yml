@@ -21,6 +21,7 @@ services:
       - REDIS_PORT
       - DK_STREAM
       - BODS_STREAM
+      - BODS_INDEX
     restart: always
 
   register_transformer_dk_redis:
