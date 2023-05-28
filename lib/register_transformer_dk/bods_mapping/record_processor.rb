@@ -56,40 +56,40 @@ module RegisterTransformerDk
       private
 
       attr_reader :entity_resolver, :interest_parser, :person_statement_mapper, :utils,
-        :child_entity_statement_mapper, :ownership_or_control_statement_mapper, :bods_publisher
+                  :child_entity_statement_mapper, :ownership_or_control_statement_mapper, :bods_publisher
 
       def map_parent_entity(dk_record)
         person_statement_mapper.call(dk_record)
       end
 
       def map_child_entity(relation)
-        child_entity_statement_mapper.call(relation, entity_resolver: entity_resolver)
+        child_entity_statement_mapper.call(relation, entity_resolver:)
       end
 
       def map_relationships(dk_record, child_entity, parent_entity, relation)
         ownership_or_control_statement_mapper.call(
           dk_record,
-          relation: relation,
-          entity_resolver: entity_resolver,
+          relation:,
+          entity_resolver:,
           source_statement: parent_entity,
           target_statement: child_entity,
-          interest_parser: interest_parser
+          interest_parser:,
         )
       end
 
       def relations_with_real_owner_status(dk_record)
         dk_record.virksomhedSummariskRelation.each_with_object([]) do |item, acc|
           next if item.virksomhed.fejlRegistreret # ignore if errors discovered
-    
+
           real_owner_role = nil
           interests = []
           is_indirect = false
-    
+
           item.organisationer.each do |o|
             o.medlemsData.each do |md|
               md.attributter.each do |a|
                 next unless a.type == 'FUNKTION'
-    
+
                 real_owner_role = utils.most_recent(
                   a.vaerdier.select { |v| v.vaerdi == 'Reel ejer' },
                 )
@@ -97,19 +97,19 @@ module RegisterTransformerDk
                 is_indirect = indirect?(md.attributter)
               end
             end
-    
+
             break if real_owner_role.present?
           end
-    
+
           next if real_owner_role.blank?
-    
+
           acc << {
             last_updated: real_owner_role.sidstOpdateret,
             start_date: real_owner_role.periode.gyldigFra,
             end_date: real_owner_role.periode.gyldigTil,
             company: item.virksomhed,
-            interests: interests,
-            is_indirect: is_indirect,
+            interests:,
+            is_indirect:,
           }
         end
       end

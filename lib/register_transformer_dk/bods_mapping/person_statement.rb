@@ -33,28 +33,28 @@ module RegisterTransformerDk
           isComponent: is_component,
           personType: person_type,
           unspecifiedPersonDetails: unspecified_person_details,
-          names: names,
-          identifiers: identifiers,
-          nationalities: nationalities,
+          names:,
+          identifiers:,
+          nationalities:,
           placeOfBirth: place_of_birth, # not implemented in register
           birthDate: birth_date,
           deathDate: death_date,
           placeOfResidence: place_of_residence,
           taxResidencies: tax_residencies,
-          addresses: addresses,
+          addresses:,
           hasPepStatus: has_pep_status,
           pepStatusDetails: pep_status_details,
           publicationDetails: publication_details,
-          source: source,
-          annotations: annotations,
-          replacesStatements: replaces_statements
+          source:,
+          annotations:,
+          replacesStatements: replaces_statements,
         }.compact]
       end
 
       private
 
       attr_reader :dk_record, :utils
-    
+
       def statement_id
         obj_id = "TODO" # TODO: implement object id
         self_updated_at = "something" # TODO: implement self_updated_at
@@ -78,7 +78,7 @@ module RegisterTransformerDk
           RegisterSourcesBods::Identifier.new(
             id: dk_record.enhedsNummer.to_s,
             schemeName: 'DK Centrale Virksomhedsregister',
-          )
+          ),
         ]
       end
 
@@ -91,18 +91,20 @@ module RegisterTransformerDk
           RegisterSourcesBods::Name.new(
             type: RegisterSourcesBods::NameTypes['individual'],
             fullName: utils.most_recent(dk_record.navne).navn,
-          )
+          ),
         ]
       end
 
       def nationalities
         latest_address = utils.most_recent(dk_record.beliggenhedsadresse)
-        nationality = latest_address.try { |a| a.landekode }
+        nationality = latest_address.try(&:landekode)
         return unless nationality
+
         country = ISO3166::Country[nationality]
         return nil if country.blank?
+
         [
-          RegisterSourcesBods::Country.new(name: country.name, code: country.alpha2)
+          RegisterSourcesBods::Country.new(name: country.name, code: country.alpha2),
         ]
       end
 
@@ -157,11 +159,12 @@ module RegisterTransformerDk
               latest_address.postnummer.try(:to_s),
             ].compact.join(', ')
           end
-        
+
         return [] if address.blank?
 
-        nationality = latest_address.try { |a| a.landekode }
+        nationality = latest_address.try(&:landekode)
         return unless nationality
+
         country = try_parse_country_name_to_code(nationality)
 
         return [] if country.blank? # TODO: check this
@@ -169,12 +172,13 @@ module RegisterTransformerDk
         [
           RegisterSourcesBods::Address.new(
             type: RegisterSourcesBods::AddressTypes['registered'], # TODO: check this
-            address: address,
+            address:,
             # postCode: nil,
-            country: country
-          )
+            country:,
+          ),
         ]
       end
+
       def try_parse_country_name_to_code(name)
         return nil if name.blank?
 
@@ -215,7 +219,7 @@ module RegisterTransformerDk
           publicationDate: Time.now.utc.to_date.to_s, # TODO: fix publication date
           bodsVersion: RegisterSourcesBods::BODS_VERSION,
           license: RegisterSourcesBods::BODS_LICENSE,
-          publisher: RegisterSourcesBods::PUBLISHER
+          publisher: RegisterSourcesBods::PUBLISHER,
         )
       end
 
@@ -225,7 +229,7 @@ module RegisterTransformerDk
           description: 'DK Centrale Virksomhedsregister',
           url: "http://distribution.virk.dk/cvr-permanent",
           retrievedAt: Time.now.utc.to_date.to_s, # TODO: fix publication date, # TODO: add retrievedAt to dk_record iso8601
-          assertedBy: nil # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
+          assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
       end
 
@@ -242,4 +246,4 @@ module RegisterTransformerDk
       end
     end
   end
-end    
+end

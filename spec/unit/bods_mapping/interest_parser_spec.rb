@@ -8,12 +8,12 @@ RSpec.describe RegisterTransformerDk::BodsMapping::InterestParser do
     context 'when type is EJERANDEL_PROCENT' do
       let(:attributter) do
         RegisterSourcesDk::Attributter[{
-          "type": "EJERANDEL_PROCENT",
-          "vaerdier": [
+          type: "EJERANDEL_PROCENT",
+          vaerdier: [
             {
-              "vaerdi": "0.5"
-            }
-          ]
+              vaerdi: "0.5",
+            },
+          ],
         }]
       end
 
@@ -25,8 +25,8 @@ RSpec.describe RegisterTransformerDk::BodsMapping::InterestParser do
               exact: 50.0,
               minimum: 50.0,
               maximum: 50.0,
-            }
-          }]
+            },
+          }],
         )
       end
     end
@@ -34,12 +34,12 @@ RSpec.describe RegisterTransformerDk::BodsMapping::InterestParser do
     context 'when type is EJERANDEL_STEMMERET_PROCENT' do
       let(:attributter) do
         RegisterSourcesDk::Attributter[{
-          "type": "EJERANDEL_STEMMERET_PROCENT",
-          "vaerdier": [
+          type: "EJERANDEL_STEMMERET_PROCENT",
+          vaerdier: [
             {
-              "vaerdi": "0.5"
-            }
-          ]
+              vaerdi: "0.5",
+            },
+          ],
         }]
       end
 
@@ -51,8 +51,8 @@ RSpec.describe RegisterTransformerDk::BodsMapping::InterestParser do
               exact: 50.0,
               minimum: 50.0,
               maximum: 50.0,
-            }
-          }]
+            },
+          }],
         )
       end
     end

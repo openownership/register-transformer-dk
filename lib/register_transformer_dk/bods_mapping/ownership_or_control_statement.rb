@@ -47,11 +47,11 @@ module RegisterTransformerDk
           statementType: statement_type,
           statementDate: statement_date,
           isComponent: false,
-          subject: subject,
+          subject:,
           interestedParty: interested_party,
-          interests: interests,
+          interests:,
           publicationDetails: publication_details,
-          source: source
+          source:,
         }.compact]
       end
 
@@ -64,14 +64,15 @@ module RegisterTransformerDk
         dk_record.data
       end
 
-      def statement_id #when Structs::Relationship
+      # when Structs::Relationship
+      def statement_id
         ID_PREFIX + hasher(
           {
             id: 'TODO_ID', # obj.id,
             updated_at: statement_date,
             source_id: source_statement.statementID,
             target_id: target_statement.statementID,
-          }.to_json
+          }.to_json,
         )
       end
 
@@ -85,7 +86,7 @@ module RegisterTransformerDk
 
       def subject
         RegisterSourcesBods::Subject.new(
-          describedByEntityStatement: target_statement.statementID
+          describedByEntityStatement: target_statement.statementID,
         )
       end
 
@@ -95,8 +96,8 @@ module RegisterTransformerDk
             interest.to_h.merge(
               {
                 startDate: relation[:start_date].presence,
-                endDate: relation[:end_date].presence
-              }.compact
+                endDate: relation[:end_date].presence,
+              }.compact,
             )
           ]
         end
@@ -106,17 +107,17 @@ module RegisterTransformerDk
         case source_statement.statementType
         when RegisterSourcesBods::StatementTypes['personStatement']
           RegisterSourcesBods::InterestedParty[{
-            describedByPersonStatement: source_statement.statementID
+            describedByPersonStatement: source_statement.statementID,
           }]
         when RegisterSourcesBods::StatementTypes['entityStatement']
           case source_statement.entityType
           when RegisterSourcesBods::EntityTypes['unknownEntity']
             RegisterSourcesBods::InterestedParty[{
-              unspecified: source_statement.unspecifiedEntityDetails
+              unspecified: source_statement.unspecifiedEntityDetails,
             }.compact]
           when RegisterSourcesBods::EntityTypes['legalEntity']
             RegisterSourcesBods::InterestedParty[{
-              describedByEntityStatement: source_statement.statementID
+              describedByEntityStatement: source_statement.statementID,
             }]
           else
             RegisterSourcesBods::InterestedParty[{}] # TODO: raise error
@@ -131,7 +132,7 @@ module RegisterTransformerDk
           publicationDate: Time.now.utc.to_date.to_s,
           bodsVersion: RegisterSourcesBods::BODS_VERSION,
           license: RegisterSourcesBods::BODS_LICENSE,
-          publisher: RegisterSourcesBods::PUBLISHER
+          publisher: RegisterSourcesBods::PUBLISHER,
         )
       end
 
@@ -141,7 +142,7 @@ module RegisterTransformerDk
           description: 'DK Centrale Virksomhedsregister',
           url: "http://distribution.virk.dk/cvr-permanent",
           retrievedAt: Time.now.utc.to_date.to_s, # TODO: fix publication date, # TODO: add retrievedAt to record iso8601
-          assertedBy: nil # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
+          assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
       end
 

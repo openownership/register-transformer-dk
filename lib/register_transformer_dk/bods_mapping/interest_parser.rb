@@ -31,7 +31,7 @@ module RegisterTransformerDk
             exact: share_percentage,
             minimum: share_percentage,
             maximum: share_percentage,
-          }
+          },
         }]
       end
 

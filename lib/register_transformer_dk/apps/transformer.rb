@@ -17,14 +17,14 @@ module RegisterTransformerDk
         entity_resolver ||= RegisterSourcesOc::Services::ResolverService.new
         s3_adapter ||= RegisterTransformerDk::Config::Adapters::S3_ADAPTER
         @bods_mapper = bods_mapper || RegisterTransformerDk::BodsMapping::RecordProcessor.new(
-          entity_resolver: entity_resolver,
-          bods_publisher: bods_publisher
+          entity_resolver:,
+          bods_publisher:,
         )
         @stream_client = RegisterCommon::Services::StreamClientKinesis.new(
           credentials: RegisterTransformerDk::Config::AWS_CREDENTIALS,
           stream_name: ENV.fetch('DK_STREAM', 'dk_stream'),
-          s3_adapter: s3_adapter,
-          s3_bucket: ENV['BODS_S3_BUCKET_NAME'],
+          s3_adapter:,
+          s3_bucket: ENV.fetch('BODS_S3_BUCKET_NAME', nil),
         )
         @consumer_id = "RegisterTransformerDk"
         @deserializer = RegisterTransformerDk::RecordDeserializer.new
@@ -42,7 +42,7 @@ module RegisterTransformerDk
       attr_reader :bods_mapper, :stream_client, :consumer_id, :deserializer
 
       def handle_records(records)
-        records.each do |record|
+        records.each do |_record|
           bods_mapper.process dk_record
         end
       end
