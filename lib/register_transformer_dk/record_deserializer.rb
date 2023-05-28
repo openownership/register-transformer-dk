@@ -13,8 +13,8 @@ module RegisterTransformerDk
     def deserialize(record_data)
       serialized_json =
         begin
-          zip_reader.open_stream(StringIO.new(record_data)) { |unzipped| unzipped.read }
-        rescue
+          zip_reader.open_stream(StringIO.new(record_data), &:read)
+        rescue StandardError
           record_data # older records may not be compressed
         end
       deserialize_from_json serialized_json
