@@ -19,19 +19,20 @@ GIT
 
 GIT
   remote: git@github.com:openownership/register-sources-bods.git
-  revision: 6c519375bad5d25b10394c27e40d37a515f86e97
-  branch: performance-improvements-v2
+  revision: d57dc61474506b1bbc390a303927edba329e2ab1
   specs:
     register_sources_bods (0.1.0)
       activesupport (>= 6, < 8)
+      countries (~> 4.0.1)
       dry-struct (>= 1, < 2)
       dry-types (>= 1, < 2)
       elasticsearch (>= 7.10, < 8)
+      iso8601
       xxhash
 
 GIT
   remote: git@github.com:openownership/register-sources-dk.git
-  revision: 4e840faa42699332fc69468965d5915c5ded812a
+  revision: 8d665ff872d91e4436135e1ed638e983927d911a
   specs:
     register_sources_dk (0.1.0)
       activesupport (>= 6, < 8)
@@ -170,7 +171,7 @@ GEM
     faraday_middleware (1.2.0)
       faraday (~> 1.0)
     hashdiff (1.0.1)
-    i18n (1.12.0)
+    i18n (1.13.0)
       concurrent-ruby (~> 1.0)
     i18n_data (0.13.1)
     ice_nine (0.11.2)
@@ -232,7 +233,7 @@ GEM
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
     rubyzip (2.3.2)
-    sixarm_ruby_unaccent (1.2.0)
+    sixarm_ruby_unaccent (1.2.2)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.4.2)
@@ -241,7 +242,7 @@ GEM
       crack (>= 0.3.2)
       hashdiff (>= 0.4.0, < 2.0.0)
     xxhash (0.5.0)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   x86_64-linux
