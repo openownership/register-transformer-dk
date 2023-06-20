@@ -137,15 +137,6 @@ RSpec.describe RegisterTransformerDk::BodsMapping::PersonStatement do
           { code: "DK", name: "Denmark" },
         ],
         personType: "knownPerson",
-        publicationDetails: {
-          bodsVersion: "0.2",
-          license: "https://register.openownership.org/terms-and-conditions",
-          publicationDate: "2022-09-14",
-          publisher: {
-            name: "OpenOwnership Register",
-            url: "https://register.openownership.org",
-          },
-        },
         source: {
           assertedBy: nil,
           description: "DK Centrale Virksomhedsregister",
@@ -153,7 +144,6 @@ RSpec.describe RegisterTransformerDk::BodsMapping::PersonStatement do
           type: "officialRegister",
           url: "http://distribution.virk.dk/cvr-permanent",
         },
-        statementID: "openownership-register-2042754144729635384",
         statementType: "personStatement",
       },
     )

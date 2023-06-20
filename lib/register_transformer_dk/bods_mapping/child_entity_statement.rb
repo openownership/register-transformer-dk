@@ -1,16 +1,8 @@
 require 'register_sources_bods/enums/entity_types'
 require 'register_sources_bods/enums/statement_types'
-require 'register_sources_bods/structs/address'
 require 'register_sources_bods/structs/entity_statement'
 require 'register_sources_bods/structs/identifier'
-require 'register_sources_bods/structs/jurisdiction'
-require 'register_sources_bods/constants/publisher'
 require 'register_sources_bods/mappers/resolver_mappings'
-
-require 'active_support/core_ext/object/blank'
-require 'active_support/core_ext/object/try'
-require 'active_support/core_ext/time'
-require 'active_support/core_ext/string/conversions'
 
 require 'register_sources_oc/structs/resolver_request'
 
@@ -19,8 +11,6 @@ require_relative 'utils'
 module RegisterTransformerDk
   module BodsMapping
     class ChildEntityStatement
-      ID_PREFIX = 'openownership-register-'.freeze
-
       include RegisterSourcesBods::Mappers::ResolverMappings
 
       def self.call(relation, utils: nil, entity_resolver: nil)
@@ -35,7 +25,6 @@ module RegisterTransformerDk
 
       def call
         RegisterSourcesBods::EntityStatement[{
-          statementID: statement_id,
           statementType: RegisterSourcesBods::StatementTypes['entityStatement'],
           isComponent: false,
           addresses:,
@@ -52,7 +41,6 @@ module RegisterTransformerDk
           ].compact,
           foundingDate: founding_date,
           dissolutionDate: dissolution_date,
-          publicationDetails: publication_details,
         }.compact]
       end
 
@@ -77,19 +65,6 @@ module RegisterTransformerDk
             jurisdiction_code: 'dk',
             name: company_name,
           ),
-        )
-      end
-
-      def statement_id
-        'TODO'
-      end
-
-      def publication_details
-        RegisterSourcesBods::PublicationDetails.new(
-          publicationDate: Time.now.utc.to_date.to_s, # TODO: fix publication date
-          bodsVersion: RegisterSourcesBods::BODS_VERSION,
-          license: RegisterSourcesBods::BODS_LICENSE,
-          publisher: RegisterSourcesBods::PUBLISHER,
         )
       end
     end

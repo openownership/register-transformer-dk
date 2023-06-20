@@ -50,7 +50,7 @@ module RegisterTransformerDk
           map_relationships(dk_record, child_entity, parent_entity, relation)
         end
 
-        relationships.each { |relationship| bods_publisher.publish(relationship) }
+        relationships.each { |relationship| bods_publisher.publish(relationship).to_h }
       end
 
       private
