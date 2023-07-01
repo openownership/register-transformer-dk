@@ -7,7 +7,6 @@ module RegisterTransformerDk
         sort_by_period(items).first
       end
 
-      # TODO: move to util for sharing
       def sort_by_period(items)
         items.sort do |x, y|
           # Convert to strings to handle `nil` values

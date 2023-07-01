@@ -3,7 +3,7 @@ version: '3.7'
 services:
   register_transformer_dk:
     image: register_transformer_dk:latest
-    entrypoint: "bundle exec /app/bin/transform"
+    # entrypoint: "bundle exec /app/bin/transform"
     network_mode: host
     environment:
       - ELASTICSEARCH_HOST

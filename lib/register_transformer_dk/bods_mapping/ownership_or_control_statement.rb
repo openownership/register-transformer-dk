@@ -1,10 +1,8 @@
 require 'xxhash'
 
-require 'register_sources_bods/constants/publisher'
 require 'register_sources_bods/structs/interest'
 require 'register_sources_bods/structs/entity_statement'
 require 'register_sources_bods/structs/ownership_or_control_statement'
-require 'register_sources_bods/structs/publication_details'
 require 'register_sources_bods/structs/share'
 require 'register_sources_bods/structs/source'
 require 'register_sources_bods/structs/subject'
@@ -16,8 +14,6 @@ module RegisterTransformerDk
   module BodsMapping
     class OwnershipOrControlStatement
       UnsupportedSourceStatementTypeError = Class.new(StandardError)
-
-      ID_PREFIX = 'openownership-register-'.freeze
 
       def self.call(dk_record, **kwargs)
         new(dk_record, **kwargs).call
@@ -43,14 +39,12 @@ module RegisterTransformerDk
 
       def call
         RegisterSourcesBods::OwnershipOrControlStatement[{
-          statementID: statement_id,
           statementType: statement_type,
           statementDate: statement_date,
           isComponent: false,
           subject:,
           interestedParty: interested_party,
           interests:,
-          publicationDetails: publication_details,
           source:,
         }.compact]
       end
@@ -62,18 +56,6 @@ module RegisterTransformerDk
 
       def data
         dk_record.data
-      end
-
-      # when Structs::Relationship
-      def statement_id
-        ID_PREFIX + hasher(
-          {
-            id: 'TODO_ID', # obj.id,
-            updated_at: statement_date,
-            source_id: source_statement.statementID,
-            target_id: target_statement.statementID,
-          }.to_json,
-        )
       end
 
       def statement_type
@@ -127,21 +109,12 @@ module RegisterTransformerDk
         end
       end
 
-      def publication_details
-        RegisterSourcesBods::PublicationDetails.new(
-          publicationDate: Time.now.utc.to_date.to_s,
-          bodsVersion: RegisterSourcesBods::BODS_VERSION,
-          license: RegisterSourcesBods::BODS_LICENSE,
-          publisher: RegisterSourcesBods::PUBLISHER,
-        )
-      end
-
       def source
         RegisterSourcesBods::Source.new(
           type: RegisterSourcesBods::SourceTypes['officialRegister'],
           description: 'DK Centrale Virksomhedsregister',
           url: "http://distribution.virk.dk/cvr-permanent",
-          retrievedAt: Time.now.utc.to_date.to_s, # TODO: fix publication date, # TODO: add retrievedAt to record iso8601
+          retrievedAt: Time.now.utc.to_date.to_s, # TODO: add retrievedAt to record iso8601
           assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
       end

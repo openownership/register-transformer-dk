@@ -14,8 +14,6 @@ require_relative 'utils'
 module RegisterTransformerDk
   module BodsMapping
     class PersonStatement
-      ID_PREFIX = 'openownership-register-'.freeze
-
       def self.call(dk_record)
         new(dk_record).call
       end
@@ -27,27 +25,14 @@ module RegisterTransformerDk
 
       def call
         RegisterSourcesBods::PersonStatement[{
-          statementID: statement_id,
           statementType: statement_type,
-          # statementDate: statement_date,
-          isComponent: is_component,
+          isComponent: false,
           personType: person_type,
-          unspecifiedPersonDetails: unspecified_person_details,
           names:,
           identifiers:,
           nationalities:,
-          placeOfBirth: place_of_birth, # not implemented in register
-          birthDate: birth_date,
-          deathDate: death_date,
-          placeOfResidence: place_of_residence,
-          taxResidencies: tax_residencies,
           addresses:,
-          hasPepStatus: has_pep_status,
-          pepStatusDetails: pep_status_details,
-          publicationDetails: publication_details,
           source:,
-          annotations:,
-          replacesStatements: replaces_statements,
         }.compact]
       end
 
@@ -55,18 +40,8 @@ module RegisterTransformerDk
 
       attr_reader :dk_record, :utils
 
-      def statement_id
-        obj_id = "TODO" # TODO: implement object id
-        self_updated_at = "something" # TODO: implement self_updated_at
-        ID_PREFIX + hasher("openownership-register/entity/#{obj_id}/#{self_updated_at}")
-      end
-
       def statement_type
         RegisterSourcesBods::StatementTypes['personStatement']
-      end
-
-      def statement_date
-        # NOT IMPLEMENTED
       end
 
       def person_type
@@ -80,10 +55,6 @@ module RegisterTransformerDk
             schemeName: 'DK Centrale Virksomhedsregister',
           ),
         ]
-      end
-
-      def unspecified_person_details
-        # { reason, description }
       end
 
       def names
@@ -106,26 +77,6 @@ module RegisterTransformerDk
         [
           RegisterSourcesBods::Country.new(name: country.name, code: country.alpha2),
         ]
-      end
-
-      def place_of_birth
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def birth_date
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def death_date
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def place_of_residence
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def tax_residencies
-        # NOT IMPLEMENTED IN REGISTER
       end
 
       def addresses
@@ -173,7 +124,6 @@ module RegisterTransformerDk
           RegisterSourcesBods::Address.new(
             type: RegisterSourcesBods::AddressTypes['registered'], # TODO: check this
             address:,
-            # postCode: nil,
             country:,
           ),
         ]
@@ -193,52 +143,14 @@ module RegisterTransformerDk
         return country.alpha2 if country
       end
 
-      def has_pep_status
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def pep_status_details
-        # NOT IMPLEMENTED IN REGISTER
-      end
-
-      def statement_date
-        # UNIMPLEMENTED IN REGISTER (only for ownership or control statements)
-      end
-
-      def is_component
-        false
-      end
-
-      def replaces_statements
-        # UNIMPLEMENTED IN REGISTER
-      end
-
-      def publication_details
-        # UNIMPLEMENTED IN REGISTER
-        RegisterSourcesBods::PublicationDetails.new(
-          publicationDate: Time.now.utc.to_date.to_s, # TODO: fix publication date
-          bodsVersion: RegisterSourcesBods::BODS_VERSION,
-          license: RegisterSourcesBods::BODS_LICENSE,
-          publisher: RegisterSourcesBods::PUBLISHER,
-        )
-      end
-
       def source
         RegisterSourcesBods::Source.new(
           type: RegisterSourcesBods::SourceTypes['officialRegister'],
           description: 'DK Centrale Virksomhedsregister',
           url: "http://distribution.virk.dk/cvr-permanent",
-          retrievedAt: Time.now.utc.to_date.to_s, # TODO: fix publication date, # TODO: add retrievedAt to dk_record iso8601
+          retrievedAt: Time.now.utc.to_date.to_s, # TODO: add retrievedAt to dk_record iso8601
           assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
-      end
-
-      def annotations
-        # UNIMPLEMENTED IN REGISTER
-      end
-
-      def replaces_statements
-        # UNIMPLEMENTED IN REGISTER
       end
 
       def hasher(dk_record)

@@ -178,19 +178,9 @@ RSpec.describe RegisterTransformerDk::BodsMapping::OwnershipOrControlStatement d
           { share: { exact: 50.0, maximum: 50.0, minimum: 50.0 }, type: "voting-rights" },
         ],
         isComponent: false,
-        statementID: "openownership-register-2984872342337792862",
         statementType: "ownershipOrControlStatement",
         subject: {
           describedByEntityStatement: "targetID",
-        },
-        publicationDetails: {
-          bodsVersion: "0.2",
-          license: "https://register.openownership.org/terms-and-conditions",
-          publicationDate: "2022-09-14",
-          publisher: {
-            name: "OpenOwnership Register",
-            url: "https://register.openownership.org",
-          },
         },
         source: {
           assertedBy: nil,

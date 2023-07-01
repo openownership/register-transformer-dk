@@ -1,13 +1,14 @@
 require 'register_transformer_dk/config/settings'
 require 'register_transformer_dk/config/adapters'
-require 'register_transformer_dk/bods_mapping/record_processor'
-require 'register_transformer_dk/record_deserializer'
+
+require 'register_common/services/stream_client_kinesis'
+
 require 'register_sources_bods/services/publisher'
 require 'register_sources_dk/structs/deltagerperson'
 require 'register_sources_oc/services/resolver_service'
-require 'register_common/services/stream_client_kinesis'
 
-$stdout.sync = true
+require 'register_transformer_dk/bods_mapping/record_processor'
+require 'register_transformer_dk/record_deserializer'
 
 module RegisterTransformerDk
   module Apps
@@ -40,12 +41,6 @@ module RegisterTransformerDk
       private
 
       attr_reader :bods_mapper, :stream_client, :consumer_id, :deserializer
-
-      def handle_records(records)
-        records.each do |_record|
-          bods_mapper.process dk_record
-        end
-      end
     end
   end
 end
