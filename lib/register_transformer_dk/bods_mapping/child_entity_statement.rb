@@ -38,6 +38,7 @@ module RegisterTransformerDk
               id: company_number,
             ),
             open_corporates_identifier,
+            lei_identifier,
           ].compact,
           foundingDate: founding_date,
           dissolutionDate: dissolution_date,
