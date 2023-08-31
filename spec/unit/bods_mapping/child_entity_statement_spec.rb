@@ -100,7 +100,7 @@ RSpec.describe RegisterTransformerDk::BodsMapping::ChildEntityStatement do
             id: "XXXXXXXXXXXXX1234567",
             scheme: "XI-LEI",
             schemeName: "Global Legal Entity Identifier Index",
-            uri: "https://opencorporates.com/companies/dk/1234567",
+            uri: "https://search.gleif.org/#/record/XXXXXXXXXXXXX1234567",
           },
         ],
         isComponent: false,
