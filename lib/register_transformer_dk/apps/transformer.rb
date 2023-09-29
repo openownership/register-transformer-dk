@@ -15,7 +15,7 @@ require 'register_transformer_dk/record_deserializer'
 module RegisterTransformerDk
   module Apps
     class Transformer
-      def initialize(bods_publisher: nil, entity_resolver: nil, s3_adapter: nil, bods_mapper: nil, deserializer: nil)
+      def initialize(bods_publisher: nil, entity_resolver: nil, s3_adapter: nil, bods_mapper: nil)
         bods_publisher ||= RegisterSourcesBods::Services::Publisher.new
         entity_resolver ||= RegisterSourcesOc::Services::ResolverService.new
         s3_adapter ||= RegisterTransformerDk::Config::Adapters::S3_ADAPTER
