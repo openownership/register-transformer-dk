@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'xxhash'
 
 require 'register_sources_bods/structs/interest'
@@ -19,6 +21,7 @@ module RegisterTransformerDk
         new(dk_record, **kwargs).call
       end
 
+      # rubocop:disable Metrics/ParameterLists
       def initialize(
         dk_record,
         relation:,
@@ -36,6 +39,7 @@ module RegisterTransformerDk
         @entity_resolver = entity_resolver
         @utils = utils || Utils.new
       end
+      # rubocop:enable Metrics/ParameterLists
 
       def call
         RegisterSourcesBods::OwnershipOrControlStatement[{
@@ -45,7 +49,7 @@ module RegisterTransformerDk
           subject:,
           interestedParty: interested_party,
           interests:,
-          source:,
+          source:
         }.compact]
       end
 
@@ -68,7 +72,7 @@ module RegisterTransformerDk
 
       def subject
         RegisterSourcesBods::Subject.new(
-          describedByEntityStatement: target_statement.statementID,
+          describedByEntityStatement: target_statement.statementID
         )
       end
 
@@ -78,8 +82,8 @@ module RegisterTransformerDk
             interest.to_h.merge(
               {
                 startDate: relation[:start_date].presence,
-                endDate: relation[:end_date].presence,
-              }.compact,
+                endDate: relation[:end_date].presence
+              }.compact
             )
           ]
         end
@@ -89,17 +93,17 @@ module RegisterTransformerDk
         case source_statement.statementType
         when RegisterSourcesBods::StatementTypes['personStatement']
           RegisterSourcesBods::InterestedParty[{
-            describedByPersonStatement: source_statement.statementID,
+            describedByPersonStatement: source_statement.statementID
           }]
         when RegisterSourcesBods::StatementTypes['entityStatement']
           case source_statement.entityType
           when RegisterSourcesBods::EntityTypes['unknownEntity']
             RegisterSourcesBods::InterestedParty[{
-              unspecified: source_statement.unspecifiedEntityDetails,
+              unspecified: source_statement.unspecifiedEntityDetails
             }.compact]
           when RegisterSourcesBods::EntityTypes['legalEntity']
             RegisterSourcesBods::InterestedParty[{
-              describedByEntityStatement: source_statement.statementID,
+              describedByEntityStatement: source_statement.statementID
             }]
           else
             RegisterSourcesBods::InterestedParty[{}] # TODO: raise error
@@ -113,9 +117,9 @@ module RegisterTransformerDk
         RegisterSourcesBods::Source.new(
           type: RegisterSourcesBods::SourceTypes['officialRegister'],
           description: 'DK Centrale Virksomhedsregister',
-          url: "http://distribution.virk.dk/cvr-permanent",
+          url: 'http://distribution.virk.dk/cvr-permanent',
           retrievedAt: Time.now.utc.to_date.to_s, # TODO: add retrievedAt to record iso8601
-          assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
+          assertedBy: nil # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
       end
 

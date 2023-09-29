@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/testing/time_helpers'
 
 require 'register_transformer_dk/bods_mapping/record_processor'
@@ -13,7 +15,7 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
       person_statement_mapper:,
       child_entity_statement_mapper:,
       ownership_or_control_statement_mapper:,
-      bods_publisher:,
+      bods_publisher:
     )
   end
 
@@ -22,54 +24,54 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
     data = {
       navne: [
         {
-          navn: "Danish Person 1",
+          navn: 'Danish Person 1',
           periode: {
             gyldigFra: nil,
-            gyldigTil: nil,
-          },
-        },
+            gyldigTil: nil
+          }
+        }
       ],
       beliggenhedsadresse: [
         {
-          landekode: "DK",
+          landekode: 'DK',
           fritekst: nil,
           husnummerFra: 1,
           husnummerTil: nil,
           etage: nil,
           conavn: nil,
           postboks: nil,
-          vejnavn: "Example Vej",
+          vejnavn: 'Example Vej',
           postnummer: 1234,
-          postdistrikt: "Example Town",
+          postdistrikt: 'Example Town',
           periode: {
-            gyldigFra: "2015-01-01",
-            gyldigTil: nil,
-          },
-        },
+            gyldigFra: '2015-01-01',
+            gyldigTil: nil
+          }
+        }
       ],
       virksomhedSummariskRelation: [
         {
           virksomhed: {
-            enhedstype: "VIRKSOMHED",
+            enhedstype: 'VIRKSOMHED',
             fejlRegistreret: false,
-            sidstOpdateret: "2015-01-02T00:00:00.000+02:00",
+            sidstOpdateret: '2015-01-02T00:00:00.000+02:00',
             cvrNummer: 1_234_567,
             navne: [
               {
-                navn: "Danish Company 1",
+                navn: 'Danish Company 1',
                 periode: {
-                  gyldigFra: "2015-01-01",
-                  gyldigTil: "2015-01-02",
-                },
+                  gyldigFra: '2015-01-01',
+                  gyldigTil: '2015-01-02'
+                }
               },
               {
-                navn: "Renamed Danish Company 1",
+                navn: 'Renamed Danish Company 1',
                 periode: {
-                  gyldigFra: "2015-01-02",
-                  gyldigTil: nil,
-                },
-              },
-            ],
+                  gyldigFra: '2015-01-02',
+                  gyldigTil: nil
+                }
+              }
+            ]
           },
           organisationer: [
             {
@@ -77,45 +79,45 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
                 {
                   attributter: [
                     {
-                      type: "EJERANDEL_PROCENT",
+                      type: 'EJERANDEL_PROCENT',
                       vaerdier: [
                         {
-                          vaerdi: "0.5",
-                        },
-                      ],
+                          vaerdi: '0.5'
+                        }
+                      ]
                     },
                     {
-                      type: "EJERANDEL_STEMMERET_PROCENT",
+                      type: 'EJERANDEL_STEMMERET_PROCENT',
                       vaerdier: [
                         {
-                          vaerdi: "0.5",
-                        },
-                      ],
+                          vaerdi: '0.5'
+                        }
+                      ]
                     },
                     {
-                      type: "FUNKTION",
+                      type: 'FUNKTION',
                       vaerdier: [
                         {
-                          vaerdi: "Reel ejer",
+                          vaerdi: 'Reel ejer',
                           periode: {
-                            gyldigFra: "2015-01-01",
-                            gyldigTil: nil,
+                            gyldigFra: '2015-01-01',
+                            gyldigTil: nil
                           },
-                          sidstOpdateret: "2015-01-02T00:00:00.000+02:00",
-                        },
-                      ],
-                    },
-                  ],
-                },
-              ],
-            },
-          ],
-        },
+                          sidstOpdateret: '2015-01-02T00:00:00.000+02:00'
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
       ],
       fejlRegistreret: false,
       enhedsNummer: 1,
-      enhedstype: "PERSON",
-      sidstOpdateret: "2015-01-02T00:00:00.000+01:00",
+      enhedstype: 'PERSON',
+      sidstOpdateret: '2015-01-02T00:00:00.000+01:00'
     }
     RegisterSourcesDk::Deltagerperson[data]
   end
@@ -130,13 +132,13 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
 
   it 'processes record' do
     expect(interest_parser).to receive(:call).with(
-      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[0],
+      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[0]
     )
     expect(interest_parser).to receive(:call).with(
-      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[1],
+      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[1]
     )
     expect(interest_parser).to receive(:call).with(
-      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[2],
+      dk_record.virksomhedSummariskRelation[0].organisationer[0].medlemsData[0].attributter[2]
     )
 
     relation = {
@@ -144,19 +146,19 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
       end_date: nil,
       interests: [],
       is_indirect: false,
-      last_updated: "2015-01-02T00:00:00.000+02:00",
-      start_date: "2015-01-01",
+      last_updated: '2015-01-02T00:00:00.000+02:00',
+      start_date: '2015-01-01'
     }
 
     parent_entity = double 'parent_entity'
     expect(person_statement_mapper).to receive(:call).with(
-      dk_record,
+      dk_record
     ).and_return parent_entity
 
     child_entity = double 'child_entity'
     expect(child_entity_statement_mapper).to receive(:call).with(
       relation,
-      entity_resolver:,
+      entity_resolver:
     ).and_return child_entity
 
     source_statement = double 'source_statement'
@@ -169,7 +171,7 @@ RSpec.describe RegisterTransformerDk::BodsMapping::RecordProcessor do
       entity_resolver:,
       source_statement:,
       target_statement:,
-      interest_parser:,
+      interest_parser:
     ).and_return ownership_or_control_statement
 
     expect(bods_publisher).to receive(:publish).with(parent_entity).and_return source_statement

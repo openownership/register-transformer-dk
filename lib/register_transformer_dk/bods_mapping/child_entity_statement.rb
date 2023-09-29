@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'register_sources_bods/enums/entity_types'
 require 'register_sources_bods/enums/statement_types'
 require 'register_sources_bods/structs/entity_statement'
@@ -35,13 +37,13 @@ module RegisterTransformerDk
             RegisterSourcesBods::Identifier.new(
               scheme: 'DK-CVR',
               schemeName: 'Danish Central Business Register',
-              id: company_number,
+              id: company_number
             ),
             open_corporates_identifier,
-            lei_identifier,
+            lei_identifier
           ].compact,
           foundingDate: founding_date,
-          dissolutionDate: dissolution_date,
+          dissolutionDate: dissolution_date
         }.compact]
       end
 
@@ -64,8 +66,8 @@ module RegisterTransformerDk
           RegisterSourcesOc::ResolverRequest.new(
             company_number:,
             jurisdiction_code: 'dk',
-            name: company_name,
-          ),
+            name: company_name
+          )
         )
       end
     end

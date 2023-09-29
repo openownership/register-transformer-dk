@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # NOTE: some of the logic in this importer is based on the OC script:
 # https://gist.github.com/skenaja/cf843d127e8937b5f79fa6d0e81d1543
 
@@ -12,6 +14,7 @@ require_relative 'utils'
 module RegisterTransformerDk
   module BodsMapping
     class RecordProcessor
+      # rubocop:disable Metrics/ParameterLists
       def initialize(
         entity_resolver: nil,
         interest_parser: nil,
@@ -29,6 +32,7 @@ module RegisterTransformerDk
         @ownership_or_control_statement_mapper = ownership_or_control_statement_mapper
         @utils = utils || Utils.new
       end
+      # rubocop:enable Metrics/ParameterLists
 
       def process(dk_record)
         # A record here conforms to the `Vrdeltagerperson` data type from the DK data source
@@ -73,10 +77,11 @@ module RegisterTransformerDk
           entity_resolver:,
           source_statement: parent_entity,
           target_statement: child_entity,
-          interest_parser:,
+          interest_parser:
         )
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def relations_with_real_owner_status(dk_record)
         dk_record.virksomhedSummariskRelation.each_with_object([]) do |item, acc|
           next if item.virksomhed.fejlRegistreret # ignore if errors discovered
@@ -91,9 +96,9 @@ module RegisterTransformerDk
                 next unless a.type == 'FUNKTION'
 
                 real_owner_role = utils.most_recent(
-                  a.vaerdier.select { |v| v.vaerdi == 'Reel ejer' },
+                  a.vaerdier.select { |v| v.vaerdi == 'Reel ejer' }
                 )
-                interests = md.attributter.map { |a| interest_parser.call a }.compact
+                interests = md.attributter.map { |a2| interest_parser.call a2 }.compact
                 is_indirect = indirect?(md.attributter)
               end
             end
@@ -109,10 +114,11 @@ module RegisterTransformerDk
             end_date: real_owner_role.periode.gyldigTil,
             company: item.virksomhed,
             interests:,
-            is_indirect:,
+            is_indirect:
           }
         end
       end
+      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       def indirect?(attributes)
         special_ownership = attributes.find { |a| a.type == 'SÆRLIGE_EJERFORHOLD' }

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'xxhash'
 require 'register_sources_bods/constants/publisher'
 require 'register_sources_bods/structs/person_statement'
@@ -32,7 +34,7 @@ module RegisterTransformerDk
           identifiers:,
           nationalities:,
           addresses:,
-          source:,
+          source:
         }.compact]
       end
 
@@ -52,8 +54,8 @@ module RegisterTransformerDk
         [
           RegisterSourcesBods::Identifier.new(
             id: dk_record.enhedsNummer.to_s,
-            schemeName: 'DK Centrale Virksomhedsregister',
-          ),
+            schemeName: 'DK Centrale Virksomhedsregister'
+          )
         ]
       end
 
@@ -61,8 +63,8 @@ module RegisterTransformerDk
         [
           RegisterSourcesBods::Name.new(
             type: RegisterSourcesBods::NameTypes['individual'],
-            fullName: utils.most_recent(dk_record.navne).navn,
-          ),
+            fullName: utils.most_recent(dk_record.navne).navn
+          )
         ]
       end
 
@@ -75,10 +77,11 @@ module RegisterTransformerDk
         return nil if country.blank?
 
         [
-          RegisterSourcesBods::Country.new(name: country.name, code: country.alpha2),
+          RegisterSourcesBods::Country.new(name: country.name, code: country.alpha2)
         ]
       end
 
+      # rubocop:disable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
       def addresses
         latest_address = utils.most_recent(dk_record.beliggenhedsadresse)
 
@@ -94,12 +97,12 @@ module RegisterTransformerDk
 
             street_address_excl_floor = [
               latest_address.vejnavn.try(:strip).presence,
-              street_numbers,
+              street_numbers
             ].compact.map(&:strip).map(&:presence).compact.join(' ')
 
             street_address_excl_postbox = [
               street_address_excl_floor,
-              latest_address.etage.try(:strip).presence,
+              latest_address.etage.try(:strip).presence
             ].compact.join(', ')
 
             [
@@ -107,7 +110,7 @@ module RegisterTransformerDk
               street_address_excl_postbox,
               latest_address.postboks.try(:strip).presence && "Postboks #{latest_address.postboks}",
               latest_address.postdistrikt.try(:strip).presence,
-              latest_address.postnummer.try(:to_s),
+              latest_address.postnummer.try(:to_s)
             ].compact.join(', ')
           end
 
@@ -124,10 +127,11 @@ module RegisterTransformerDk
           RegisterSourcesBods::Address.new(
             type: RegisterSourcesBods::AddressTypes['registered'], # TODO: check this
             address:,
-            country:,
-          ),
+            country:
+          )
         ]
       end
+      # rubocop:enable Metrics/CyclomaticComplexity, Metrics/PerceivedComplexity
 
       def try_parse_country_name_to_code(name)
         return nil if name.blank?
@@ -147,9 +151,9 @@ module RegisterTransformerDk
         RegisterSourcesBods::Source.new(
           type: RegisterSourcesBods::SourceTypes['officialRegister'],
           description: 'DK Centrale Virksomhedsregister',
-          url: "http://distribution.virk.dk/cvr-permanent",
+          url: 'http://distribution.virk.dk/cvr-permanent',
           retrievedAt: Time.now.utc.to_date.to_s, # TODO: add retrievedAt to dk_record iso8601
-          assertedBy: nil, # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
+          assertedBy: nil # TODO: if it is a combination of sources (DK and OpenCorporates), is it us?
         )
       end
 

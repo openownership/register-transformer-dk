@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'register_transformer_dk/config/settings'
 require 'register_transformer_dk/config/adapters'
 
@@ -19,15 +21,15 @@ module RegisterTransformerDk
         s3_adapter ||= RegisterTransformerDk::Config::Adapters::S3_ADAPTER
         @bods_mapper = bods_mapper || RegisterTransformerDk::BodsMapping::RecordProcessor.new(
           entity_resolver:,
-          bods_publisher:,
+          bods_publisher:
         )
         @stream_client = RegisterCommon::Services::StreamClientKinesis.new(
           credentials: RegisterTransformerDk::Config::AWS_CREDENTIALS,
           stream_name: ENV.fetch('DK_STREAM', 'dk_stream'),
           s3_adapter:,
-          s3_bucket: ENV.fetch('BODS_S3_BUCKET_NAME', nil),
+          s3_bucket: ENV.fetch('BODS_S3_BUCKET_NAME', nil)
         )
-        @consumer_id = "RegisterTransformerDk"
+        @consumer_id = 'RegisterTransformerDk'
         @deserializer = RegisterTransformerDk::RecordDeserializer.new
       end
 
