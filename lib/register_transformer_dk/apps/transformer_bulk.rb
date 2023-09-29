@@ -30,7 +30,7 @@ module RegisterTransformerDk
       end
 
       # rubocop:disable Metrics/ParameterLists
-      def initialize(s3_adapter: nil, bods_publisher: nil, entity_resolver: nil, bods_mapper: nil, redis: nil,
+      def initialize(bods_publisher: nil, entity_resolver: nil, bods_mapper: nil, redis: nil,
                      s3_bucket: nil, file_reader: nil)
         bods_publisher ||= RegisterSourcesBods::Services::Publisher.new
         entity_resolver ||= RegisterSourcesOc::Services::ResolverService.new
