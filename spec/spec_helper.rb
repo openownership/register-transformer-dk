@@ -4,12 +4,12 @@ module RegisterTransformerDk
   UNITTEST = 1
 end
 
-require "register_transformer_dk"
+require 'register_transformer_dk'
 require 'webmock/rspec'
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
-  config.example_status_persistence_file_path = ".rspec_status"
+  config.example_status_persistence_file_path = '.rspec_status'
 
   # Disable RSpec exposing methods globally on `Module` and `main`
   config.disable_monkey_patching!
@@ -25,8 +25,7 @@ RSpec.configure do |config|
     allow_localhost: true,
     allow: [
       'chromedriver.storage.googleapis.com',
-      'elasticsearch',
-      'register_dk_elasticsearch_test',
-    ],
+      'elasticsearch'
+    ]
   )
 end

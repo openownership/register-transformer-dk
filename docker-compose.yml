@@ -15,12 +15,14 @@ services:
       - ${DC_TRANSFORMER_DK_LIB_REGISTER_SOURCES_BODS:-.dockerempty}:/home/x/lib/register-sources-bods
       - ${DC_TRANSFORMER_DK_LIB_REGISTER_SOURCES_DK:-.dockerempty}:/home/x/lib/register-sources-dk
       - ${DC_TRANSFORMER_DK_LIB_REGISTER_SOURCES_OC:-.dockerempty}:/home/x/lib/register-sources-oc
+      - ./.rubocop.yml:/home/x/r/.rubocop.yml
       - ./bin:/home/x/r/bin
       - ./Gemfile.lock:/home/x/r/Gemfile.lock
       - ./Gemfile:/home/x/r/Gemfile
       - ./lib:/home/x/r/lib
       - ./register_transformer_dk.gemspec:/home/x/r/register_transformer_dk.gemspec
       - ./spec:/home/x/r/spec
+      - ./statements:/home/x/r/statements
   redis:
     healthcheck:
       interval: 5s

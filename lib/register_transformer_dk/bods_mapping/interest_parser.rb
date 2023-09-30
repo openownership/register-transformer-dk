@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'active_support/core_ext/string/conversions'
 
 require 'register_sources_bods/structs/interest'
@@ -11,10 +13,10 @@ module RegisterTransformerDk
         @utils = utils || Utils.new
       end
 
-      def call(i)
+      def call(interest)
         interest_type = nil
 
-        case i.type
+        case interest.type
         when 'EJERANDEL_PROCENT'
           interest_type = 'shareholding'
         when 'EJERANDEL_STEMMERET_PROCENT'
@@ -23,15 +25,15 @@ module RegisterTransformerDk
 
         return if interest_type.blank?
 
-        share_percentage = utils.most_recent(i.vaerdier).vaerdi.to_f * 100.0
+        share_percentage = utils.most_recent(interest.vaerdier).vaerdi.to_f * 100.0
 
         RegisterSourcesBods::Interest[{
           type: interest_type,
           share: {
             exact: share_percentage,
             minimum: share_percentage,
-            maximum: share_percentage,
-          },
+            maximum: share_percentage
+          }
         }]
       end
 
