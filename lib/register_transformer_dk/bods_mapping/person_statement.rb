@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-require 'xxhash'
-require 'register_sources_bods/constants/publisher'
-require 'register_sources_bods/structs/person_statement'
-require 'register_sources_bods/structs/publication_details'
-require 'register_sources_bods/structs/source'
-
 require 'active_support/core_ext/object/blank'
 require 'active_support/core_ext/object/try'
 require 'countries'
 require 'iso8601'
+require 'register_sources_bods/constants/publisher'
+require 'register_sources_bods/structs/person_statement'
+require 'register_sources_bods/structs/publication_details'
+require 'register_sources_bods/structs/source'
+require 'xxhash'
 
 require_relative 'utils'
 

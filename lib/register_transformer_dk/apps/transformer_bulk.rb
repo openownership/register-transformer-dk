@@ -1,26 +1,23 @@
 # frozen_string_literal: true
 
 require 'redis'
-
-require 'register_transformer_dk/config/settings'
-require 'register_transformer_dk/config/adapters'
-
 require 'register_common/services/file_reader'
-
 require 'register_sources_bods/services/publisher'
 require 'register_sources_dk/structs/deltagerperson'
 require 'register_sources_oc/services/resolver_service'
 
-require 'register_transformer_dk/bods_mapping/record_processor'
-require 'register_transformer_dk/record_deserializer'
+require_relative '../bods_mapping/record_processor'
+require_relative '../config/adapters'
+require_relative '../config/settings'
+require_relative '../record_deserializer'
 
 $stdout.sync = true
 
 module RegisterTransformerDk
   module Apps
     class TransformerBulk
-      BATCH_SIZE = 25
-      NAMESPACE = 'DK_TRANSFORMER_BULK'
+      BATCH_SIZE     = 25
+      NAMESPACE      = 'DK_TRANSFORMER_BULK'
       PARALLEL_FILES = ENV.fetch('DK_PARALLEL_FILES', 5).to_i
 
       def self.bash_call(args)

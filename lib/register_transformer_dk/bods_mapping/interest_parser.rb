@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require 'active_support/core_ext/string/conversions'
-
 require 'register_sources_bods/structs/interest'
 
 require_relative 'utils'
