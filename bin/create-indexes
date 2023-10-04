@@ -7,4 +7,4 @@ require 'register_transformer_dk/config/settings'
 
 require 'register_sources_bods/services/es_index_creator'
 
-RegisterSourcesBods::Services::EsIndexCreator.new.create_es_index
+RegisterSourcesBods::Services::EsIndexCreator.new.create_index
