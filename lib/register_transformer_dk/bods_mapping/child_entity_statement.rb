@@ -2,10 +2,9 @@
 
 require 'register_sources_bods/enums/entity_types'
 require 'register_sources_bods/enums/statement_types'
+require 'register_sources_bods/mappers/resolver_mappings'
 require 'register_sources_bods/structs/entity_statement'
 require 'register_sources_bods/structs/identifier'
-require 'register_sources_bods/mappers/resolver_mappings'
-
 require 'register_sources_oc/structs/resolver_request'
 
 require_relative 'utils'

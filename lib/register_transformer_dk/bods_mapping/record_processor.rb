@@ -3,12 +3,10 @@
 # NOTE: some of the logic in this importer is based on the OC script:
 # https://gist.github.com/skenaja/cf843d127e8937b5f79fa6d0e81d1543
 
+require_relative 'child_entity_statement'
 require_relative 'interest_parser'
-
-require 'register_transformer_dk/bods_mapping/person_statement'
-require 'register_transformer_dk/bods_mapping/child_entity_statement'
-require 'register_transformer_dk/bods_mapping/ownership_or_control_statement'
-
+require_relative 'ownership_or_control_statement'
+require_relative 'person_statement'
 require_relative 'utils'
 
 module RegisterTransformerDk
