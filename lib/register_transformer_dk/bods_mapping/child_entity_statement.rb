@@ -30,6 +30,7 @@ module RegisterTransformerDk
           isComponent: false,
           addresses:,
           name: company_name || name,
+          alternateNames: alternate_names,
           entityType: RegisterSourcesBods::EntityTypes['registeredEntity'],
           incorporatedInJurisdiction: incorporated_in_jurisdiction,
           identifiers: [
