@@ -19,7 +19,7 @@ GIT
 
 GIT
   remote: https://github.com/openownership/register-sources-bods.git
-  revision: 8bfa52442431330b2c379dfba5677cc7c26cb648
+  revision: dbb37abd67d2bd13ca3eda2a943eefc1a3caad05
   specs:
     register_sources_bods (0.1.0)
       activesupport (>= 6, < 8)
