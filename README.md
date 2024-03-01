@@ -34,5 +34,5 @@ docker compose run transformer-dk test
 To transform the bulk data from a prefix in AWS S3:
 
 ```sh
-docker compose run transformer-dk transform-bulk raw_data/source=DK/year=2023/month=10/day=06/
+docker compose run transformer-dk transform-bulk raw_data/source=DK/year=2023/month=10/
 ```
