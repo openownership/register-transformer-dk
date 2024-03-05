@@ -3,6 +3,18 @@
 
 require 'bundler/setup'
 
-require 'register_transformer_dk/apps/transformer'
+require 'register_sources_bods/apps/transformer_stream'
+require 'register_sources_dk/structs/deltagerperson'
+require 'register_transformer_dk/bods_mapping/record_processor'
+require 'register_transformer_dk/config/adapters'
+require 'register_transformer_dk/config/settings'
 
-RegisterTransformerDk::Apps::Transformer.new.call
+transformer = RegisterSourcesBods::Apps::TransformerStream.new(
+  credentials: RegisterTransformerDk::Config::AWS_CREDENTIALS,
+  consumer_id: 'RegisterTransformerDk',
+  record_processor: RegisterTransformerDk::BodsMapping::RecordProcessor,
+  record_struct: RegisterSourcesDk::Deltagerperson,
+  s3_adapter: RegisterTransformerDk::Config::Adapters::S3_ADAPTER,
+  stream_name: ENV.fetch('DK_STREAM')
+)
+transformer.transform
