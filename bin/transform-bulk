@@ -13,6 +13,7 @@ s3_prefix = ARGV.last
 
 transformer = RegisterSourcesBods::Apps::TransformerBulk.new(
   namespace: 'DK_TRANSFORMER_BULK',
+  namespace_transformed: 'transformer-dk',
   parallel_files: ENV.fetch('DK_PARALLEL_FILES', 5).to_i,
   record_processor: RegisterTransformerDk::BodsMapping::RecordProcessor,
   record_struct: RegisterSourcesDk::Deltagerperson,
